@@ -1,0 +1,278 @@
+﻿{% extends "common/base.html" %}{% load staticfiles %}{% block title %}{% endblock title %}{% block commoncss %}  <!-- Stylesheets -->
+  <link href="{% static 'common/style/bootstrap.css' %}" rel="stylesheet">
+  <!-- Font awesome icon -->
+  <link href="{% static 'common/style/font-awesome.css' %}" rel="stylesheet">
+  <!-- jQuery UI -->
+  <link href="{% static 'common/style/jquery-ui.css' %}" rel="stylesheet">
+  <!-- Calendar -->
+  <link href="{% static 'common/style/fullcalendar.css' %}" rel="stylesheet">
+  <!-- prettyPhoto -->
+  <link href="{% static 'common/style/prettyPhoto.css' %}" rel="stylesheet">
+  <!-- Star rating -->
+  <link href="{% static 'common/style/rateit.css' %}" rel="stylesheet">
+  <!-- Date picker -->
+  <link href="{% static 'common/style/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+  <!-- CLEditor -->
+  <link href="{% static 'common/style/jquery.cleditor.css' %}" rel="stylesheet">
+  <!-- Bootstrap toggle -->
+  <link href="{% static 'common/style/bootstrap-switch.css' %}" rel="stylesheet">
+  <!-- Main stylesheet -->
+  <link href="{% static 'common/style/style.css' %}" rel="stylesheet">
+  <!-- Widgets stylesheet -->
+  <link href="{% static 'common/style/widgets.css' %}" rel="stylesheet">
+  <!-- HTML5 Support for IE -->
+  <!--[if lt IE 9]>
+  <script src="{% static 'common/js/html5shim.js' %}"></script>
+  <![endif]-->
+  <link rel="shortcut icon" href="{% static 'common/img/favicon.ico' %}" mce_href="{% static 'common/img/favicon.ico' %}" type="image/x-icon">{% endblock commoncss %}
+{% block content %}
+<div class="navbar navbar-fixed-top bs-docs-nav" role="banner">
+    <div class="conjtainer">
+      <!-- Menu button for smallar screens -->
+
+
+      <!-- Navigation starts -->
+      <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+        <!-- Links -->
+        <ul class="nav navbar-nav pull-right">
+          <li class="dropdown pull-right">
+            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+              <i class="icon-user"></i> 你好{{user.username}} <b class="caret"></b>
+            </a>
+
+            <!-- Dropdown menu -->
+            <ul class="dropdown-menu">
+             <li><a href="#"><i class="icon-user"></i> 资料</a></li>
+              <li><a href="#"><i class="icon-cogs"></i> 设置</a></li>
+              <li><a href="/accounts/logout/"><i class="icon-off"></i> 退出</a></li>
+            </ul>
+          </li>
+
+        </ul>
+      </nav>
+
+    </div>
+  </div>
+
+
+<!-- Header starts -->
+  <header>
+    <div class="container">
+      <div class="row">
+
+        <!-- Logo section -->
+        <div class="col-md-8">
+          <!-- Logo. -->
+          <div class="logo">
+            <h1><a href="#">预发布<span class="bold"></span></a></h1>
+            <p class="meta">后台管理系统</p>
+          </div>
+          <!-- Logo ends -->
+        </div>
+
+        <!-- Button section -->
+
+
+        <!-- Data section -->
+
+        <div class="col-md-4">
+          <div class="header-data">
+
+            <!-- Traffic data -->
+            <div class="hdata">
+              <div class="mcol-left">
+                <!-- Icon with red background -->
+                <i class="icon-signal bred"></i>
+              </div>
+              <div class="mcol-right">
+                <!-- Number of visitors -->
+                <p><a href="#">{{request.session.release_all_counts}}</a> <em>预发布</em></p>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <!-- Members data -->
+            <div class="hdata">
+              <div class="mcol-left">
+                <!-- Icon with blue background -->
+                <i class="icon-user bblue"></i>
+              </div>
+              <div class="mcol-right">
+                <!-- Number of visitors -->
+                <p><a href="#">{{request.session.user_counts}}</a> <em>用户数</em></p>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <!-- revenue data -->
+            <div class="hdata">
+              <div class="mcol-left">
+                <!-- Icon with green background -->
+                <i class="icon-money bgreen"></i>
+              </div>
+              <div class="mcol-right">
+                <!-- Number of visitors -->
+                <p><a href="#">{{request.session.project_counts}}</a><em>项目数</em></p>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+<!-- Header ends -->
+
+<!-- Main content starts -->
+
+<div class="content">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-dropdown"><a href="#">导航</a></div>
+
+        <!--- Sidebar navigation -->
+        <!-- If the main navigation has sub navigation, then add the class "has_sub" to "li" of main navigation. -->
+        <ul id="nav">
+          <!-- Main menu with font awesome icon -->
+          <li><a href="/" ><i class="icon-home"></i> 首页</a>
+          </li>
+
+          <li><a href="/release/" ><i class="icon-table"></i>预发布</a></li>
+        
+            <!-- 在这里做一个判断，如果是超级管理员，则显示该菜单  -->
+            {% if request.user.is_superuser == True %}
+          <li class="has_sub"><a href="#"><i class="icon-list-alt"></i> 项目管理  <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+            <ul>
+              <li><a href="#">新建项目 </a></li>
+              <li><a href="#">编辑项目 </a></li>
+
+            </ul>
+          </li>
+
+          <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 用户管理 <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+            <ul>
+              <li><a href="/accounts/user_list/">编辑用户</a></li>
+              <li><a href="/accounts/user_add/">新建用户</a></li>
+
+            </ul>
+          </li>
+         {% else %}
+
+            {% endif %}
+
+            <li class="has_sub"><a href="#"><i class="icon-file-alt"></i> 日志 <span class="pull-right"><i class="icon-chevron-right"></i></span></a>
+            <ul>
+            {% if request.user.is_superuser == True %}
+              <li><a href="#">系统日志</a></li>
+             {% else %}
+
+            {% endif %}
+              <li><a href="/logs/release/">预发布日志</a></li>
+
+            </ul>
+          </li>
+
+
+        </ul>
+    </div>
+
+    <!-- Sidebar ends -->
+
+        <!-- Main bar -->
+    <div class="mainbar">
+  <!-- Page heading -->
+    {% block pheading %}
+
+
+
+    {% endblock pheading %}
+      <!-- Page heading ends -->
+
+
+
+      <!-- Matter -->
+    {% block Matter %}
+
+
+
+    {% endblock Matter %}
+
+
+    <!-- Matter ends -->
+
+    </div>
+
+   <!-- Mainbar ends -->
+   <div class="clearfix"></div>
+
+</div>
+<!-- Content ends -->
+{% endblock content %}
+
+{% block footer %}
+
+    <!-- Footer starts -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+                <!-- Copyright info -->
+                <p class="copy">Copyright &copy; 2015 | <a href="#">预发布管理</a> </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Footer ends -->
+
+  <!-- Scroll to top -->
+    <span class="totop"><a href="#"><i class="icon-chevron-up"></i></a></span>
+{% endblock footer %}
+
+{% block commonjs %}
+
+<!-- JS -->
+<script src="{% static 'common/js/jquery.js' %}"></script>
+<script src="{% static 'common/js/bootstrap.js' %}"></script>
+<script src="{% static 'common/js/jquery-ui-1.9.2.custom.min.js' %}"></script>
+<script src="{% static 'common/js/fullcalendar.min.js' %}"></script>
+<script src="{% static 'common/js/jquery.rateit.min.js' %}"></script>
+<script src="{% static 'common/js/jquery.prettyPhoto.js' %}"></script>
+
+<!-- jQuery Flot -->
+<script src="{% static 'common/js/excanvas.min.js' %}"></script>
+<script src="{% static 'common/js/jquery.flot.js' %}"></script>
+<script src="{% static 'common/js/jquery.flot.resize.js' %}"></script>
+<script src="{% static 'common/js/jquery.flot.pie.js' %}"></script>
+<script src="{% static 'common/js/jquery.flot.stack.js' %}"></script>
+
+<!-- jQuery Notification - Noty -->
+<script src="{% static 'common/js/jquery.noty.js' %}"></script>
+<script src="{% static 'common/js/themes/default.js' %}"></script>
+<script src="{% static 'common/js/layouts/bottom.js' %}"></script>
+<script src="{% static 'common/js/layouts/topRight.js' %}"></script>
+<script src="{% static 'common/js/layouts/top.js' %}"></script>
+
+<!-- jQuery Notification ends -->
+<script src="{% static 'common/js/sparklines.js' %}"></script>
+<script src="{% static 'common/js/jquery.cleditor.min.js' %}"></script>
+<script src="{% static 'common/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="{% static 'common/js/bootstrap-switch.min.js' %}"></script>
+<script src="{% static 'common/js/filter.js' %}"></script>
+<script src="{% static 'common/js/custom.js' %}"></script>
+<script src="{% static 'common/js/charts.js' %}"></script>
+
+<script type="text/javascript">
+     $(document).ready(function () {
+            $('#nav li a').each(function () {
+                if ($($(this))[0].href == String(window.location))
+                    $(this).addClass('open');
+            });
+        })
+</script>
+{% block customjs %} {% endblock customjs %}
+{% endblock commonjs %}

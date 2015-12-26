@@ -1,0 +1,103 @@
+﻿{% extends "common/base.html" %}
+{% load staticfiles %}
+{% block title %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <!-- Title and other stuffs -->
+  <title>预发布管理系统-登录</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="">
+{% endblock title %}
+{% block commoncss %}
+<link href="{% static 'common/style/bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'common/style/font-awesome.css' %}" rel="stylesheet">
+<link href="{% static 'common/style/style.css' %}" rel="stylesheet">
+
+
+<!-- HTML5 Support for IE -->
+  <!--[if lt IE 9]>
+  <script src="js/html5shim.js"></script>
+  <![endif]-->
+
+{% endblock commoncss %}
+</head>
+<body>
+{% block content %}
+
+<!-- Form area -->
+<div class="admin-form">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Widget starts -->
+            <div class="widget worange">
+              <!-- Widget head -->
+              <div class="widget-head">
+                <i class="icon-lock"></i> 登录
+              </div>
+
+              <div class="widget-content">
+                <div class="padd">
+                  <!-- Login form -->
+                  <form class="form-horizontal" method="post" action="/accounts/login/">
+                    {% csrf_token %}
+                    <!-- Username -->
+                    <div class="form-group">
+                      <label class="control-label col-lg-3" for="inputUsername">用户名</label>
+                      <div class="col-lg-9">
+                        <input type="text" name="username" class="form-control" id="inputUsername" placeholder="Username" required="length[4~50]">
+                      </div>
+                    </div>
+                    <!-- Password -->
+                    <div class="form-group">
+                      <label class="control-label col-lg-3" for="inputPassword">密&nbsp&nbsp&nbsp&nbsp码</label>
+                      <div class="col-lg-9">
+                        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password" required="length[4~50]">
+                      </div>
+                    </div>
+                    <!-- Remember me checkbox and sign in button -->
+                    <!--
+                    <div class="form-group">
+                    <div class="col-lg-9 col-lg-offset-3">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox"> Remember me
+                        </label>
+                        </div>
+                    </div>
+                    </div>
+                    -->
+                        <div class="col-lg-9 col-lg-offset-2">
+                            <button type="submit" class="btn btn-danger">登录</button>
+                            <button type="reset" class="btn btn-default">重置</button>
+                        </div>
+                    <br />
+                  </form>
+                            
+                </div>
+                </div>
+
+                        <div class="widget-foot">
+                             {% if err %}  
+                             <div class="alert alert-warning" role="alert">
+                                <strong>{{err}}</strong> 
+                             </div> 
+                       {% endif %}  
+                        </div>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+{% block footer %}   {% endblock footer %}
+{% block commonjs %}
+
+<script src="{% static 'common/js/jquery.js' %}"></script>
+<script src="{% static 'common/js/bootstrap.js' %}"></script>
+{% endblock commonjs %}
+</body>
+</html>

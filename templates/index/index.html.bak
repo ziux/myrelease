@@ -1,0 +1,120 @@
+﻿{% extends "common/base_index.html" %}
+{% load staticfiles %}{% block title %}
+  <title>预发布后台管理系统-首页</title>
+  <meta name="keywords" content="pre-relese" />
+  <meta name="description" content="pre-relese" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="">
+{% endblock title %}
+{% block pheading %}
+
+<div class="page-head">
+          <h2 class="pull-left"><i class="icon-home"></i> 首页</h2>
+
+        <!-- Breadcrumb -->
+        <div class="bread-crumb pull-right">
+          <a href="index.html"><i class="icon-home"></i> 首页</a>
+
+        </div>
+
+        <div class="clearfix"></div>
+
+        </div>
+
+    {% endblock pheading %}
+
+{% block Matter %}
+
+        <div class="matter">
+        <div class="container">
+
+
+  <!-- Today status. jQuery Sparkline plugin used. -->
+
+          <div class="row">
+            <div class="col-md-12">
+              <!-- List starts -->
+              <ul class="today-datas">
+                <!-- List #1 -->
+                <li>
+                  <!-- Graph -->
+                  <div><span id="todayspark1" class="spark"></span></div>
+                  <!-- Text -->
+                  <div class="datas-text">12,000 visitors/day</div>
+                </li>
+                <li>
+                  <div><span id="todayspark2" class="spark"></span></div>
+                  <div class="datas-text">30,000 Pageviews</div>
+                </li>
+                <li>
+                  <div><span id="todayspark3" class="spark"></span></div>
+                  <div class="datas-text">15.66% Bounce Rate</div>
+                </li>
+                <li>
+                  <div><span id="todayspark4" class="spark"></span></div>
+                  <div class="datas-text">$12,000 Revenue/Day</div>
+                </li>
+                <li>
+                  <div><span id="todayspark5" class="spark"></span></div>
+                  <div class="datas-text">15,000000 visitors till date</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Today status ends -->
+
+
+
+
+<div class="col-md-4">
+              <div class="widget">
+                <!-- Widget title -->
+                <div class="widget-head">
+                  <div class="pull-left">Server Status</div>
+                  <div class="widget-icons pull-right">
+                    <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
+                    <a href="#" class="wclose"><i class="icon-remove"></i></a>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="widget-content">
+                  <!-- Widget content -->
+
+                  <table class="table table-striped table-bordered table-hover">
+                    <tbody><tr>
+                      <td>Domain</td>
+                      <td>{{request.session.domain}}</td>
+                    </tr>
+                    <tr>
+                      <td>Server IP Address</td>
+                      <td>{{request.session.server_ip}}</td>
+                    </tr>
+                    <tr>
+                      <td>Your IP Address</td>
+                      <td>{{request.session.your_ip}}</td>
+                    </tr>
+                    <tr>
+                      <td>Django Version</td>
+                      <td>{{request.session.django_version}}</td>
+                    </tr>
+                    <tr>
+                      <td>MySQL Databases</td>
+                      <td>{{request.session.mysql_version}}</td>
+                    </tr>
+                  </tbody></table>
+
+                  <div class="widget-foot">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+        </div>
+      </div>
+
+{% endblock Matter %}
+

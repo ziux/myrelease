@@ -1,0 +1,102 @@
+﻿{% extends "common/base_index.html" %}
+{% load staticfiles %}{% block title %}
+  <title>预发布后台管理系统-添加用户</title>
+  <meta name="keywords" content="pre-relese" />
+  <meta name="description" content="pre-relese" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="">
+{% endblock title %}
+{% block pheading %}
+
+<div class="page-head">
+          <h2 class="pull-left"><i class="icon-home"></i> 用户管理</h2>
+
+        <!-- Breadcrumb -->
+        <div class="bread-crumb pull-right">
+          <a href="index.html"><i class="icon-home"></i> 新建用户</a>
+
+        </div>
+
+        <div class="clearfix"></div>
+
+        </div>
+
+    {% endblock pheading %}
+
+{% block Matter %}
+
+   <div class="matter">
+       <div class="container">
+
+            <div class="row">
+      <div class="col-lg-4">
+        <!-- Widget starts -->
+            <div class="widget wred">
+              <div class="widget-head">
+                <i class="icon-lock"></i> 新建用户 
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                  
+                  <form class="form-horizontal" method="post" action="/accounts/user_add/">
+                    {% csrf_token %}
+                    <!-- Registration form starts -->
+                                      <!-- Name -->
+                                          <div class="form-group">
+                                            <label class="control-label col-lg-3" for="name">姓&nbsp&nbsp&nbsp&nbsp名</label>
+                                            <div class="col-lg-9">
+                                              <input type="text" class="form-control" name="first_name" placeholder="姓名" required="length[6~50]">
+                                            </div>
+                                          </div>   
+                                          <!-- Username -->
+                                          <div class="form-group">
+                                            <label class="control-label col-lg-3" for="username">用户名</label>
+                                            <div class="col-lg-9">
+                                              <input type="text" class="form-control"  name="username" placeholder="登录用户名" required="length[6~50]">
+                                            </div>
+                                          </div>
+                                          <!-- Password -->
+                                          <div class="form-group">
+                                            <label class="control-label col-lg-3" for="email">密&nbsp&nbsp&nbsp&nbsp码</label>
+                                            <div class="col-lg-9">
+                                              <input type="password" class="form-control" name="password" placeholder="登录密码" required="length[6~50]">
+                                            </div>
+                                          </div>
+
+
+
+                                          <!-- Accept box and button s-->
+                                          <div class="form-group">
+                                            <div class="col-lg-9 col-lg-offset-3">
+                                              <br>
+                                              <button type="submit" class="btn btn-danger">提交</button>
+                                              <button type="reset" class="btn btn-success">重置</button>
+                                            </div>
+                                          </div>
+
+
+
+                                          <br>
+                  </form>
+
+
+                </div>
+              </div>
+                <div class="widget-foot">
+                         {% if err %}
+                             <script>( '{{err}}' )</script>
+                             <div class="alert alert-warning" role="alert">
+                                <strong>{{err}}</strong>
+                             </div>
+                       {% endif %}
+                </div>
+            </div>  
+      </div>
+    </div>
+
+
+       </div>
+   </div>
+
+{% endblock Matter %}
+
