@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+from django.views.decorators.csrf import csrf_exempt
+
 def login_index(request):
     if not request.user.is_authenticated():
         return render(request, 'accounts/login.html')
@@ -41,7 +43,7 @@ def logout_account(request):
 def user_list(request):
     objects = User.objects.all()
     from release.fenye import fenYe
-    fenyeno = 5
+    fenyeno = 10
 
     posts,allPage,curPage = fenYe(request,fenyeno,objects)
     addno = fenyeno * (curPage - 1)
@@ -50,7 +52,7 @@ def user_list(request):
     
 @login_required
 def user_add(request):
-    if request.user.is_superuser == True:
+    if request.user.is_superuser is True:
         #开启表单提交并写入数据库
         if request.method == 'POST':
             first_name = request.POST['first_name']
@@ -78,7 +80,7 @@ def user_add(request):
 
 @login_required
 def user_edit(request,id):
-    if request.user.is_superuser == True:
+    if request.user.is_superuser is True:
         edituser = User.objects.get(id=id)
         if request.method == "POST":
             #做判断，如果是super则只允许root和自己修改，
@@ -105,7 +107,7 @@ def usersave(request,edituser):
 
 @login_required
 def user_edit_password(request,id):
-    if request.user.is_superuser == True:
+    if request.user.is_superuser is True:
         cpuser = User.objects.get(id=id)
         if request.method == "POST":
             password1 = request.POST['password1']
@@ -120,7 +122,7 @@ def user_edit_password(request,id):
                     return render(request,'accounts/usereditpassword.html',{'id':id,'msg':msg})
                 else:
                     #只能修改自己或者其它普通用户
-                    if cpuser.is_superuser == False or cpuser.username == request.user.username or request.user.username=='root':
+                    if cpuser.is_superuser is False or cpuser.username == request.user.username or request.user.username=='root':
                         cpuser.set_password(password1)
                         cpuser.save()
                         msg = "重置成功"
@@ -140,9 +142,9 @@ def user_edit_password(request,id):
 
 @login_required
 def user_del(request,id):
-    if request.user.is_superuser == True:
+    if request.user.is_superuser is True:
         deluser = get_object_or_404(User,pk=int(id)) 
-        if deluser.is_superuser == False:
+        if deluser.is_superuser is False:
             deluser.delete()
             return HttpResponseRedirect('/accounts/user_list/')
         elif deluser.username == 'root':
@@ -152,5 +154,79 @@ def user_del(request,id):
             return HttpResponseRedirect('/accounts/user_list/') 
         else:
             return HttpResponseRedirect('/accounts/user_list/')
+    else:
+        return HttpResponseRedirect('/')
+
+
+@csrf_exempt
+@login_required
+def user_edit_permission(request,id):
+    #根据id查询出用户名
+    ob = User.objects.filter(id=id).values("username")
+    for o in ob:
+        username = o['username']
+    #如果是管理员则允许编辑权限
+    if request.user.is_superuser is True:
+        #提交编辑用户项目权限
+        if request.method == "POST":
+            #"提交编辑用户项目权限"
+            poststr = ','.join(request.POST.getlist('arr'))
+            from release.models import permission
+            qo = permission.objects.get(username_id=username)
+            qo.ownprojectid = poststr
+            qo.save()
+            
+            msg = "权限编辑成功" 
+            return HttpResponse(msg)
+            #return render(request,'accounts/userpermission.html',{'msg': msg } )
+
+
+
+        #获取用户项目权限
+        if request.method == "GET":
+            #通过id获取username
+            o=User.objects.filter(id=id)
+            for i in o:
+                username = i.username
+            #再通过username获取项目id列表
+            from release.models import permission
+            from release.models import projectinfo
+            ownpid = permission.objects.filter(username_id=username)
+            allprojo = projectinfo.objects.filter(isinit=1)
+            uname = ""
+            prostr = "" 
+            for i in ownpid:
+                prostr = str(i.ownprojectid).strip()
+                uname = str(i.username_id)
+            
+            #如果从权限表中查到该用户则查出权限
+            if uname:
+                #项目列表不为空
+                if prostr:
+                    prolist = filter(None,prostr.split(','))
+                    try:
+                        projo = projectinfo.objects.filter(id__in=prolist).filter(isinit=1)
+                    except ValueError:
+                        return HttpResponseRedirect('/')
+                    else:
+                        #print "获得了列表"
+                        #这里的allprojo是通过求差得出
+                        allprojo = projectinfo.objects.filter(isinit=1).exclude(id__in=prolist)
+                        return render(request,'accounts/userpermission.html',{'id':id,'username':username,'projo':projo,'allprojo': allprojo } ) 
+                #项目列表为空
+                else:
+                    #print "项目权限列表为空"
+                    return render(request,'accounts/userpermission.html',{'id':id,'username':username,'allprojo':allprojo}) 
+
+            #如果没查到该用户则该用户写入权限表，对应项目id为空,也允许跳到编辑页面
+            else:
+                #没有该用户,向权限表中插入用户名
+                q = permission(username_id=username)
+                q.save()
+                return render(request,'accounts/userpermission.html',{'id':id,'username':username,'allprojo':allprojo})
+                
+
+
+    #不是管理员则直接返回到首页
     else:
         return HttpResponseRedirect('/')

@@ -94,10 +94,19 @@
 
                           <td>
 
-                              <a href="/accounts/user_edit/{{post.id}}/"><button class="btn btn-xs btn-success"><i class="icon-pencil"></i>编辑</button></a>
+                              {% if post.username == "root" %}
+
+                              {% else %}
+                              <a href="/accounts/user_edit/{{post.id}}/"><button class="btn btn-xs btn-primary"><i class="icon-pencil"></i>用户信息</button></a>
                               <a href="/accounts/user_edit_password/{{post.id}}/"><button class="btn btn-xs btn-warning"><i class="icon-pencil"></i>重置密码</button></a>
-                              <a href="/accounts/user_del/{{post.id}}/"><button class="btn btn-xs btn-danger"><i class="icon-remove"></i>删除</button></a>
-                          
+
+                                {% if post.is_superuser == True %}
+                                {% else %} 
+                                <a href="/accounts/user_edit_permission/{{post.id}}/"><button class="btn btn-xs btn-success"><i class="icon-pencil"></i>项目权限</button></a>
+                                <a href="/accounts/user_del/{{post.id}}/" onclick="if(confirm('是否删除:{{post.username}}')==false) return false;"><button class="btn btn-xs btn-danger"><i class="icon-remove"></i>删除</button></a>
+                                {% endif %}
+                               {% endif %}
+
                           </td>
                         </tr>
 

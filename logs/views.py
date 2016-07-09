@@ -14,15 +14,49 @@ def sys(request):
 def release(request):
     from release.models import projectinfo
     from release.fenye import fenYe
-    #查询项目列表列出项目(分页)
+    from release.models import permission
+
+
+    #分页一页多少条数据
     fenyeno = 10
-    objects = projectinfo.objects.filter(isinit=1)
-    posts,allPage,curPage = fenYe(request,fenyeno,objects)
-    addno = fenyeno * (curPage - 1)
-    lists = range(1,allPage+1)
-    result = {'posts':posts,'allPage':allPage,'curPage':curPage,'addno':addno,'lists':lists}     
-    
-    return render(request,'logs/release.html',result)
+
+    if request.user.is_superuser == True:
+    #判断是否是管理员，是管理员则查询出所有项目
+    #获取projectinfo项目信息并分页显示
+        objects = projectinfo.objects.filter(isinit=1)
+        posts,allPage,curPage = fenYe(request,fenyeno,objects)
+        addno = fenyeno * (curPage - 1)
+        lists = range(1,allPage+1)
+        return render(request,'logs/release.html',{'posts':posts,'allPage':allPage,'curPage':curPage,'addno':addno,'lists':lists})
+    else:
+        #如果不是管理员，则根据名字去permission表查询有那些项目权限，
+        ownpid = permission.objects.filter(username_id=request.user.username)
+        if ownpid:
+            #1：如果有对应名字则获取对应的项目id数组，通过这个数组再过滤是否改项目是启用状态
+            for i in ownpid:
+                prostr = str(i.ownprojectid).strip()
+                
+            print(prostr)
+            if prostr:
+                #该用户拥有项目列表非空则查询出项目
+                prolist = filter(None,prostr.split(','))
+                print(prolist)
+                try:
+                    objects = projectinfo.objects.filter(isinit=1,id__in=prolist)
+                except ValueError:
+                    return render(request,'logs/release.html')
+                else:
+                    posts,allPage,curPage = fenYe(request,fenyeno,objects)
+                    addno = fenyeno * (curPage - 1)
+                    lists = range(1,allPage+1)
+                    return render(request,'logs/release.html',{'posts':posts,'allPage':allPage,'curPage':curPage,'addno':addno,'lists':lists})
+                
+            else:
+                #该用户拥有项目列表为空则直接返回不查询
+                return render(request,'logs/release.html')
+        else:
+            #2：如果没有对应的名字则不显示任何项目
+            return render(request,'logs/release.html')
     
         
    
@@ -42,10 +76,17 @@ def relist(request,id):
     posts2,allPage2,curPage2 = fenYe(request,fenyeno2,objects)
     addno2 = fenyeno2 * (curPage2 - 1)
     lists2 = range(1,allPage2+1)
-    
+    if int(curPage2-3) < 0:
+        fenyeqian = 0
+    else:
+        fenyeqian=int(curPage2-3)
+    fenyehou=int(curPage2+2)
+    fenyelist = lists2[fenyeqian:fenyehou] 
+    print(curPage2)
+    print(fenyelist)
 
  
-    result = {'posts2':posts2,'allPage2':allPage2,'curPage2':curPage2,'addno2':addno2,'lists2':lists2,'proid':id,'name':name} 
+    result = {'posts2':posts2,'allPage2':allPage2,'curPage2':curPage2,'addno2':addno2,'lists2':lists2,'proid':id,'name':name,'fenyelist':fenyelist} 
     return render(request,'logs/relist.html',result)
 
    

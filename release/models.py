@@ -27,3 +27,9 @@ class release(models.Model):
     def __unicode__(self):
         return self.name
 
+class permission(models.Model):
+    username = models.OneToOneField('auth.user',to_field="username",unique=True)
+    ownprojectid = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.username

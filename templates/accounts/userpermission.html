@@ -1,0 +1,192 @@
+{% extends "common/base_index.html" %}
+{% load staticfiles %}{% block title %}
+  <title>预发布后台管理系统-项目权限</title>
+  <meta name="keywords" content="pre-relese" />
+  <meta name="description" content="pre-relese" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="">
+{% endblock title %}
+{% block pheading %}
+
+<div class="page-head">
+          <h2 class="pull-left"><i class="icon-home"></i> 用户管理</h2>
+
+        <!-- Breadcrumb -->
+        <div class="bread-crumb pull-right">
+          <a href="#"><i class="icon-home"></i> 项目权限</a>
+
+        </div>
+
+        <div class="clearfix"></div>
+
+        </div>
+
+{% endblock pheading %}
+
+{% block Matter %}
+
+<div class="matter">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5">
+        <!-- Widget starts -->
+        <div class="widget wred">
+          <div class="widget-head">
+            <i class="icon-lock"></i> <span style="font-weight:bold;">{{username}}</span> 用户权限:
+          </div>
+
+          <div class="widget-content">
+            <div class="padd">
+              <!--form开始-->
+              <div class="form-group">
+
+
+<fieldset>
+    <form method="post" name="myform">
+
+     {% csrf_token %}
+    <table class="table table-bordered dchannel-table">
+      <tbody>
+    <tr class="item-default">
+        <th>项目列表</th>
+        <th></th>
+        <th>用户权限</th>
+    </tr>
+    <tr class="item-default">
+        <td align="right" style="width: 50%;">
+            <select multiple class="form-control" name="list1" size="12" ondblclick="moveOption(document.myform.list1, document.myform.list2)">
+                    {% for p in allprojo %}
+                    <option value="{{p.id}}">{{p.name}}</option>
+                    {% endfor %}
+
+
+            </select>
+
+        </td>
+        <td style="width: 50px;" valign="middle">
+              
+            </br>
+            <input class="btn btn-xs btn-success" type="button" value="添加" onclick="moveOption(document.myform.list1, document.myform.list2)">
+            </br>
+            </br>
+            </br>
+            <input class="btn btn-xs btn-success" type="button" value="删除" onclick="moveOption(document.myform.list2, document.myform.list1)">
+        </td>
+        <td style="width: 50%;">
+            <select  multiple class="form-control" name="list2" id="sel_selected_areas" size="12" ondblclick="moveOption(document.myform.list2, document.myform.list1)">
+                    {% for p in projo %}
+                    <option value="{{p.id}}">{{p.name}}</option>
+                    {% endfor %}
+
+            </select>
+
+        </td>
+    </tr>
+      </tbody>
+    </table>
+
+                            <!--
+                            <div class="form-group">
+                                </br>
+                                <div class="col-sm-4">
+                                     值：<input type="text" name="city" size="40">
+
+                                </div>
+                            </div>
+                            -->
+
+                            <div class="form-group">
+                                </br>
+                                <div class="col-sm-4 col-sm-offset-5">
+                                    <button id="submit_button" type="button" class="btn btn-success">确认保存</button>
+                                </div>
+                            </div>
+  </form>
+</fieldset>
+
+
+              </div>
+              <!--form结束-->
+            </div>
+          </div>
+        </div>  
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock Matter %}
+
+{% block customjs %} 
+
+<script language="JavaScript">
+function moveOption(e1, e2){
+try{
+for(var i=0;i<e1.options.length;i++){
+if(e1.options[i].selected){
+var e = e1.options[i];
+e2.options.add(new Option(e.text, e.value));
+e1.remove(i);
+i=i-1
+}
+}
+//document.myform.city.value=getvalue(document.myform.list2);
+}
+catch(e){}
+}
+function getvalue(geto){
+var allvalue = "";
+for(var i=0;i<geto.options.length;i++){
+allvalue +=geto.options[i].value + ",";
+}
+return allvalue;
+}
+</script>
+
+
+<script language="JavaScript">
+
+
+$(document).ready(function(){
+    
+    
+    $('#submit_button').bind("click",
+        function(){
+            //var b = getvalue(document.myform.list2);
+            //console.log(typeof(b));
+            var arr = new Array();
+            $('#sel_selected_areas option').each(function(){
+               var val = $(this).val();
+               arr.push(val)
+            });
+             
+            //console.log(arr.sort());
+            //console.log(arr.length);
+                $.ajax({
+                type:'POST',
+                traditional:true,
+                data:{'arr':arr.sort()},
+                success:function(data){
+                    alert(data);
+
+                }, 
+                error:function(){
+                    alert("异常，请重试或联系运维管理员");
+                }
+            });
+
+            
+                
+     });
+});
+
+
+</script>
+
+
+
+{% endblock customjs %}
+
+
+
