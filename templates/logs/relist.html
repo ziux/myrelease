@@ -89,18 +89,18 @@
                        <ul class="pagination pull-right">
                            {% ifnotequal curPage2 1 %}
 
-                            <li><a href="/logs/relist/{{proid}}/?curPage={{curPage2}}&allPage={{allPage2}}&pageType=pageUp">上一页</a></li>
                             <li><a href="/logs/relist/{{proid}}/?curPage=1&allPage={{allPage2}}">首页</a></li>
+                            <li><a href="/logs/relist/{{proid}}/?curPage={{curPage2}}&allPage={{allPage2}}&pageType=pageUp">上一页</a></li>
 
                            {% endifnotequal %}
 
-                           {%for pno2 in lists2%}
+                           {%for pno2 in fenyelist%}
                                <li><a href="/logs/relist/{{proid}}/?curPage={{pno2}}&allPage={{allPage2}}">{{pno2}}</a></li>
                            {%endfor%}
 
                            {% ifnotequal curPage2 allPage2 %}
-                               <li><a href="/logs/relist/{{proid}}/?curPage={{  lists2 |length }}&allPage={{allPage2}}">末页</a></li>
                                <li><a href="/logs/relist/{{proid}}/?curPage={{curPage2}}&allPage={{allPage2}}&pageType=pageDown">下一页</a></li>
+                               <li><a href="/logs/relist/{{proid}}/?curPage={{  lists2 |length }}&allPage={{allPage2}}">末页</a></li>
                            {% endifnotequal %}
                         </ul>
 
