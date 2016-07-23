@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'release',
     'logs',
     'accounts',
+    'project',
 )
 
 MIDDLEWARE_CLASSES = (

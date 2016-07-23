@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^release/', include('release.urls',namespace="release")),
     url(r'^logs/', include('logs.urls',namespace="logs")),
     url(r'^accounts/', include('accounts.urls',namespace="accounts")),
+    url(r'^project/', include('project.urls',namespace="project")),
 ]

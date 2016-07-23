@@ -1,0 +1,146 @@
+﻿{% extends "common/base_index.html" %}
+{% load staticfiles %}{% block title %}
+  <title>预发布后台管理系统-编辑项目</title>
+  <meta name="keywords" content="pre-relese" />
+  <meta name="description" content="pre-relese" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="">
+{% endblock title %}
+{% block pheading %}
+
+<div class="page-head">
+          <h2 class="pull-left"><i class="icon-home"></i> 项目管理</h2>
+
+        <!-- Breadcrumb -->
+        <div class="bread-crumb pull-right">
+          <a href="index.html"><i class="icon-home"></i> 编辑项目</a>
+
+        </div>
+
+        <div class="clearfix"></div>
+
+        </div>
+
+    {% endblock pheading %}
+
+{% block Matter %}
+
+   <div class="matter">
+       <div class="container">
+
+
+                   <div class="row">
+      <div class="col-lg-4">
+        <!-- Widget starts -->
+            <div class="widget wred">
+              <div class="widget-head">
+                <i class="icon-lock"></i> 编辑项目 
+              </div>
+              <div class="widget-content">
+                <div class="padd">
+                
+                    <form class="form-horizontal" method="post" action="/project/edit_project/{{id}}/">
+                            {% csrf_token %} 
+                            
+                            <div class="form-group">
+                                <label for="username" class="col-sm-2 control-label">项目名称</label>
+                                <div class="col-sm-8">
+                                    <input id="projectname" name="projectname" placeholder="项目名" type="text" class="form-control" value="{{editproject.name}}">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+
+
+
+
+                            
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group"><label class="col-sm-2 control-label">项目类型</label>
+                                <div class="col-sm-8">
+                                    <div class="radio i-checks">
+                                            {% if editproject.types == "web" %}
+                                           <label>  <input type="radio" value="web" name="types"  checked="checked">web </label>
+                                            {% else %}
+                                           <label>  <input type="radio" value="web" name="types" >web </label>
+                                            {% endif %}
+                
+                                    </div>
+
+
+                                    <div class="radio i-checks">
+                                           {% if editproject.types == "wap" %}
+                                           <label>  <input type="radio" value="wap" name="types"  checked="checked">wap </label>
+                                           {% else %}
+                                           <label>  <input type="radio" value="wap" name="types" >wap </label>
+                                           {% endif %}
+                                    </div>
+                                    
+                                    <div class="radio i-checks">
+
+                                            {% if editproject.types == "app" %}
+                                           <label>  <input type="radio" value="app" name="types"  checked="checked">app </label>
+                                           {% else %}
+                                           <label>  <input type="radio" value="app" name="types" >app </label>
+                                           {% endif %}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+
+
+                             <div class="form-group"><label class="col-sm-2 control-label">是否激活</label>
+                                <div class="col-sm-8">
+                                    <div class="radio i-checks">
+                                        <label>
+                                            {% if editproject.isinit == 1 %}
+                                            <input type="radio" value="1" name="isinit"  checked="checked">是
+                                            {% else %}
+                                            <input type="radio" value="1" name="isinit" >是
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                    <div class="radio i-checks">
+                                            {% if editproject.isinit == 0 %}
+                                             <label><input type="radio" value="0" name="isinit" checked="checked">否 </label>
+
+                                            {% else %}
+                                            <label><input type="radio" value="0" name="isinit">否 </label>
+                                            {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
+
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-2">
+                                    <button class="btn btn-white" type="reset">重置</button>
+                                    <button id="submit_button" class="btn btn-primary" type="submit">确认保存</button>
+                                </div>
+                            </div>
+                        </form>
+
+                </div>
+              </div>
+                <div class="widget-foot">
+                         {% if msg %}
+                             <div class="alert alert-warning" role="alert">
+                                <strong>{{msg}}</strong>
+                             </div>
+                       {% endif %}
+                </div>
+            </div>  
+      </div>
+    </div>
+
+
+
+
+       </div>
+   </div>
+
+{% endblock Matter %}
+

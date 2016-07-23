@@ -72,8 +72,9 @@ def user_add(request):
                     user = User.objects.create_user(username=username,password=password)
                     user.first_name=first_name
                     user.save()
-                    err = "创建用户成功"
-                    return render(request, 'accounts/useradd.html', {'err': err})
+                    #err = "创建用户成功"
+                    #return render(request, 'accounts/useradd.html', {'err': err})
+                    return HttpResponseRedirect('/accounts/user_list/')
         return render(request,'accounts/useradd.html')
     else:
         return render(request,'index/index.html')
