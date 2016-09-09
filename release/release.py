@@ -70,7 +70,7 @@ def release(comments,reobj,username):
         if int(cdcommitexitstatus) + dint + aint  + rint == 0:
             result = "发布成功"
         else :
-            result = "发布失败"
+            result = "发布异常"
 
         #不管发布成功和失败，这里需要写入日志
         reobj.lastretime = times
